@@ -7,7 +7,7 @@ using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSystem
+public class MovementStatusNetworkFrameSync : NetworkBehaviour
 {
     struct transform_network : INetworkSerializeByMemcpy
     {
@@ -15,23 +15,6 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSy
         public Vector3 scale;
         public Quaternion rotation;
     }
-
-    #region  networkUpdate
-
-    public delegate void action1();
-
-    public event action1 NetworkUpdateEvent;
-    //在每次网络更新时都会调用
-    public void NetworkUpdate(NetworkUpdateStage updateStage)
-    {
-        Debug.Log("ticked with" + updateStage.ToString());
-        NetworkUpdateEvent?.Invoke();
-        
-    }
-    
-
-    #endregion
-    
 #region Variables
     [SerializeField] private Transform Camera;
 
@@ -58,11 +41,6 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSy
     // Start is called before the first frame update
     void Start()
     {
-        
-        
-        //fixme
-        NetworkUpdateLoop.RegisterNetworkUpdate(this);
-        
         //Camera = GameObject.FindWithTag("MainCamera").transform;
         Camera = GetComponentInParent<NetworkCameraManager>()._camera.transform;
         _animator = GetComponentInChildren<Animator>();
@@ -72,6 +50,12 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSy
         var a = IsServer || (!IsOwner || !IsClient);
         GetComponentInChildren<NetworkTransform>().enabled = a;
         GetComponentInChildren<NetworkAnimator>().enabled = a;
+    }
+
+
+    public void NetworkUpdate(NetworkUpdateStage updateStage)
+    {
+        
     }
 
     // Update is called once per frame
@@ -91,7 +75,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSy
 
     }
 
-    #region movementNetworkRPC
+
     [ServerRpc]
     void SyncTransformServerRpc(Vector3 pos, Quaternion rota, Vector3 _currentSpeed)
     {
@@ -110,10 +94,8 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSy
             NetworkFixSpeed = Vector3.zero;
             CurrentSpeed = Vector3.zero;
         }
-
     }
-
-
+    
     /*
     [ServerRpc]
     void SyncOtherTransformServerRpc(transform_network _transform)
@@ -128,7 +110,6 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSy
         transform.rotation = rota;
     }
 
-    #endregion
     //[ServerRpc]
     void UpdateTargetSpeed(float _canmera_transform_rotation_eulerAngles_y)
     {
@@ -202,8 +183,8 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSy
     {
         if (IsOwner && IsClient)
         {
-            lastInputFaceValue = value.Get<Vector2>();
-            //SetLastInputFaceValueServerRpc(value.Get<Vector2>());
+            //lastInputFaceValue = value.Get<Vector2>();
+            SetLastInputFaceValueServerRpc(value.Get<Vector2>());
         }
 
     }
@@ -212,8 +193,14 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour , INetworkUpdateSy
     public void SetLastInputFaceValueServerRpc(Vector2 _lastInputFaceValue)
     {
         lastInputFaceValue = _lastInputFaceValue;
+        
     }
 
+    [ClientRpc]
+    public void SendMoveInstructionClientRpc()
+    {
+        
+    }
     float FixAngle(float angle)
     {
         while (true)

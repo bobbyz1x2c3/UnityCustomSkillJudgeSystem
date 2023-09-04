@@ -1,0 +1,11 @@
+#ignore
+*.csproj
+*.sln
+/.idea
+/.vs
+/.vscode
+/Library
+/Logs
+/Temp
+/UserSettings
+.vsconfig

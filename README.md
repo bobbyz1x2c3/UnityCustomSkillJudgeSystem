@@ -4,14 +4,14 @@
 ## 一个基于Unity Netcode的网络自定义技能判断系统
 
 ---
-3 basic types of Effection:
-    DamageCause
-    BuffCause
-    PostureReduce
-包含3种基本Effection类型:
-    伤害效果(DamageCause)
-    增益效果(BuffCause)
-    姿态削减(PostureReduce)
+    3 basic types of Effection:
+        DamageCause
+        BuffCause
+        PostureReduce
+    包含3种基本Effection类型:
+        伤害效果(DamageCause)
+        增益效果(BuffCause)
+        姿态削减(PostureReduce)
 they could be found in AssetMenu at "/CustomEffect", and they are inherit from EffectionBase, which is a ScriptableObject. 
 它们可以在资源菜单“/CustomEffect”中找到,并继承自EffectionBase这个ScriptableObject。
 
@@ -28,8 +28,11 @@ Each entity has an only EntityNetworkProps (usually one player owns only one ent
 
 ## haven't done yet but planning to do 
 ## 计划待做的功能
+
 More Types of Effection
-Each ComplicatedSkill could contain more types of Effections,
 
 更多类型的Effection
+
+Each ComplicatedSkill could contain more types of Effections,
+
 每个ComplicatedSkill可以包含更多类型的Effection。

@@ -34,8 +34,17 @@
                 },
                 {
                     "name": "Attack",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "40dce3ea-bac8-4032-9f4c-02e8ea4888fb",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Attack2",
+                    "type": "Button",
+                    "id": "cb83fc14-5772-49d9-8299-2e6923745c9f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -128,6 +137,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd616277-6ba7-40ec-87a4-85e4c3dc6f50",
+                    "path": "<Mouse>/forwardButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

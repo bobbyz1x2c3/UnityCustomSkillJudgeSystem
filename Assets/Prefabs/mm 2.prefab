@@ -30,7 +30,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125634935732459698}
-  m_LocalRotation: {x: 0.08905633, y: 0.15617076, z: -0.014139809, w: 0.9836055}
+  m_LocalRotation: {x: 0.08120116, y: 0.6880478, z: -0.07793489, w: 0.7168841}
   m_LocalPosition: {x: -8.959717, y: 3.9385285, z: -0.56794995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -460,10 +460,8 @@ GameObject:
   - component: {fileID: 7125634935843963569}
   - component: {fileID: 7125634935843963581}
   - component: {fileID: 7125634935843963570}
-  - component: {fileID: 7125634935843963571}
   - component: {fileID: 7125634935843963580}
   - component: {fileID: 2239991599240706272}
-  - component: {fileID: 8415062598689980477}
   - component: {fileID: 6683956594510644485}
   - component: {fileID: 2135911296361649956}
   m_Layer: 0
@@ -539,26 +537,6 @@ CapsuleCollider:
   m_Height: 1.3702173
   m_Direction: 1
   m_Center: {x: 0, y: 0.6003318, z: -0.11454886}
---- !u!114 &7125634935843963571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7125634935843963574}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5cff0eee755704409a5360e52bcbda4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AbsoluteFaceAngle: 0
-  RotateSpeed: 500
-  TargetFaceAngle: 0
-  AbleToMove: 0
-  CurrentSpeed: {x: 0, y: 0, z: 0}
-  TargetSpeed: {x: 0, y: 0}
-  AccelerateRate: 100
-  MaxSpeed: 10
 --- !u!114 &7125634935843963580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,38 +583,17 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 1
+  SyncRotAngleX: 0
   SyncRotAngleY: 1
-  SyncRotAngleZ: 1
-  SyncScaleX: 1
-  SyncScaleY: 1
-  SyncScaleZ: 1
+  SyncRotAngleZ: 0
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
   PositionThreshold: 0.02
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
---- !u!114 &8415062598689980477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7125634935843963574}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8102cbcf2864a709e3cfe1b23599ed8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
-  AbsoluteFaceAngle: 0
-  RotateSpeed: 500
-  TargetFaceAngle: 0
-  AbleToMove: 0
-  CurrentSpeed: {x: 0, y: 0, z: 0}
-  TargetSpeed: {x: 0, y: 0}
-  AccelerateRate: 100
-  MaxSpeed: 10
 --- !u!114 &6683956594510644485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,6 +615,7 @@ MonoBehaviour:
   TargetSpeed: {x: 0, y: 0}
   AccelerateRate: 100
   MaxSpeed: 10
+  NetworkFixSpeed: {x: 0, y: 0, z: 0}
 --- !u!114 &2135911296361649956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -694,8 +652,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125634936154701569}
-  m_LocalRotation: {x: 0.027863376, y: 0.56097925, z: -0.13341095, w: 0.81653386}
-  m_LocalPosition: {x: 2.1725402, y: 1.9624292, z: -4.294682}
+  m_LocalRotation: {x: 0.021005353, y: 0.00000008940696, z: -0.000000014901159, w: 0.99977934}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -900,8 +858,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125634936590895544}
-  m_LocalRotation: {x: 0.01872199, y: 0.55898345, z: -0.11528656, w: 0.82091177}
-  m_LocalPosition: {x: -0.000003156985, y: -0.0000036538352, z: 0.00001051846}
+  m_LocalRotation: {x: 0.00030804053, y: 0.000000059604645, z: -0.000000011175871,
+    w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1200,8 +1159,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125634937742480157}
-  m_LocalRotation: {x: -0.0058957106, y: 0.566012, z: -0.11012002, w: 0.8169879}
-  m_LocalPosition: {x: 2.1725402, y: 1.9624292, z: -4.294682}
+  m_LocalRotation: {x: -0.020318702, y: 0.00000011920929, z: -0.000000029802322, w: 0.9997936}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

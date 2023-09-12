@@ -175,7 +175,7 @@ public class MovementStatus : NetworkBehaviour
         
     }
 
-    public void OnAttack(InputValue value)
+    public void OnAttack(InputValue value)  
     {
         _animator.SetTrigger("Attack");
     }

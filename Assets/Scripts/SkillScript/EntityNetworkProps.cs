@@ -103,6 +103,13 @@ public class EntityNetWorkProps : NetworkBehaviour
         }
     }
 
+    public bool IsDead
+    {
+        get
+        {
+            return prop.Value.HP <= 0;
+        }
+    }
     private void OnEnable()
     {
         buffs = new NetworkList<Buff>();
@@ -170,7 +177,9 @@ public class EntityNetWorkProps : NetworkBehaviour
         //var a = new DamageCause(this, 0, 1);
         var b = Resources.Load<DamageCause>("test/aaa");
         b.netFrom = this;
-        Debug.Log(b);
+       // Debug.Log(b);
+        Debug.Log(id.Value + "attack ！受击方剩余HP："+TotalManager.GetEntityByID(ID).prop.Value.HP);
+
         b.Execute(TotalManager.GetEntityByID(ID));
     }
 

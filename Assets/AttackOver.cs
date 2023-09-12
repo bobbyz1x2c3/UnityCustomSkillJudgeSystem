@@ -8,6 +8,7 @@ public class AttackOver : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         //animator.SetBool(Shortcuts.AnimationKeys.PARAM_IS_ATTACK,false);
+        //Debug.Log(stateInfo.ToString() + "enter");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -21,6 +22,8 @@ public class AttackOver : StateMachineBehaviour
     {
        //animator.ResetTrigger("Attack");
        animator.SetBool(Shortcuts.AnimationKeys.PARAM_IS_ATTACK,false);
+       animator.SetBool(Shortcuts.AnimationKeys.PARAM_IS_UPSLASH,false);
+       //Debug.Log(stateInfo.ToString() + "exit");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

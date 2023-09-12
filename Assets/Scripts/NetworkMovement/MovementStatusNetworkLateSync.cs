@@ -17,7 +17,8 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
         public Vector3 scale;
         public Quaternion rotation;
     }
-
+    
+    
     #region GetAnimationState
 
     public bool isAnimationCombo
@@ -94,7 +95,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
     //在每次网络更新时都会调用
     public void NetworkUpdate(NetworkUpdateStage updateStage)
     {
-        Debug.Log("ticked with" + updateStage.ToString());
+        //Debug.Log("ticked with" + updateStage.ToString());
         NetworkUpdateEvent?.Invoke();
 
     }
@@ -242,7 +243,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
             ? Vector2.zero
             : RotationMatrix(Vector2.up * MaxSpeed, TargetFaceAngle);
 
-        if (isAnimationDefend)
+        if (Shortcuts.CharacterAnimatorUtils.isAnimationDefend(_animator))
         {
             //减速幅度
             TargetSpeed *= 0.2f;
@@ -263,15 +264,15 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
             Debug.Log("buzai 攻击zhong");
             RotateSpeed = 500f;
         }*/
-        if (isAnimationOccupied)
+        if (Shortcuts.CharacterAnimatorUtils.isAnimationOccupied(_animator))
         {
-            Debug.Log("攻击zhong");
+            
             RotateSpeed = 20f;
             TargetSpeed *= 0.1f;
         }
         else
         {
-            Debug.Log("buzai 攻击zhong");
+            
             RotateSpeed = 500f;
         }
 
@@ -458,7 +459,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
     {
         _animator.SetTrigger(_paramName);
     }
-    IEnumerator releaseWait()
+    /*IEnumerator releaseWait()
     {
         yield return new WaitForSeconds(0.5f);
         SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_ATTACK, false);
@@ -478,7 +479,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
                 StartCoroutine(releaseWait());
             }
         }
-    }
+    }*/
     public void OnAttack(InputValue value)
     {
         var a = value.Get<float>();
@@ -498,8 +499,9 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
             IsClient 
             )
         {
-            SendAnimTriggerServerRpc("Attack");
-            _animator.SetTrigger("Attack");
+            /*SendAnimTriggerServerRpc("Attack");
+            _animator.SetTrigger("Attack");*/
+            SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_UPSLASH, true);
         }
     }
 }

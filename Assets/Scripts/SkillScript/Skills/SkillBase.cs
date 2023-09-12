@@ -20,5 +20,14 @@ namespace DataClass.Skills
             return 0;
         }
 
+        public void SetEffectOrigin(EntityNetWorkProps origin)
+        {
+            foreach (var vaEffect in effects)
+            {
+                vaEffect.network_from = origin;
+            }
+            
+        }
+
     }
 }

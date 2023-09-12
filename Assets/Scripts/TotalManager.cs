@@ -88,7 +88,7 @@ public class TotalManager : MonoBehaviour
         Debug.Log("the num of all entities:"+all_entities.Length);
         foreach (var VARIABLE in all_entities)
         {
-            Debug.Log(VARIABLE.prop.Value.HP);
+            Debug.Log(VARIABLE.id.Value + "剩余HP："+VARIABLE.prop.Value.HP);
             Test_2.instance.updateEnt();
         }
     }

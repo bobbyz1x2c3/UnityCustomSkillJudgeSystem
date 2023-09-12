@@ -7,7 +7,7 @@ public class FixTransformError : MonoBehaviour
 {
     private Animator _animator;
 
-    public bool isAnimationCombo
+    /*public bool isAnimationCombo
     {
         get
         {
@@ -59,7 +59,7 @@ public class FixTransformError : MonoBehaviour
                    || isAnimationDefend
                    || isAnimationCombo;
         }
-    }
+    }*/
 
     private void Start()
     {
@@ -69,7 +69,7 @@ public class FixTransformError : MonoBehaviour
     private void LateUpdate()
     {
         transform.localPosition = Vector3.zero;
-        _animator.SetBool(Shortcuts.AnimationKeys.PARAM_ANIMATION_OCCUPIED, isAnimationOccupied);
+        _animator.SetBool(Shortcuts.AnimationKeys.PARAM_ANIMATION_OCCUPIED, Shortcuts.CharacterAnimatorUtils.isAnimationOccupied(_animator));
         /*if(isAnimationAttack)
         {
             _animator.SetLayerWeight(Shortcuts.AnimationKeys.MAIN_LAYER, 0);

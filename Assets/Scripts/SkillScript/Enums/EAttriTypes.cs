@@ -1,6 +1,6 @@
 ﻿namespace DataClass.Enums
 {
-    public enum AttriTypes
+    public enum EAttriTypes
     {
         HP,
         maxHP,

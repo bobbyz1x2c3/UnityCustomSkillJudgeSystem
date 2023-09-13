@@ -412,20 +412,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
     }
 
 
-    public void OnDefend(InputValue value)
-    {
-        var a = value.Get<float>();
-        DefendMode = a > 0;
 
-        if (IsOwner && IsClient)
-        {
-            //DefendServerRpc(DefendMode); 
-            SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_DEFEND, DefendMode);
-            //_animator.SetBool("isDefend",DefendMode);
-        }
-
-
-    }
 
 
     /*
@@ -459,27 +446,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
     {
         _animator.SetTrigger(_paramName);
     }
-    /*IEnumerator releaseWait()
-    {
-        yield return new WaitForSeconds(0.5f);
-        SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_ATTACK, false);
-    }
-    private bool attackCancelCheck {
-        set
-        {
 
-            if (value)
-            {
-                StopCoroutine("releaseWait");
-                SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_ATTACK, true);
-            }
-            else
-            {
-                SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_ATTACK, true);
-                StartCoroutine(releaseWait());
-            }
-        }
-    }*/
     public void OnAttack(InputValue value)
     {
         var a = value.Get<float>();
@@ -502,6 +469,30 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
             /*SendAnimTriggerServerRpc("Attack");
             _animator.SetTrigger("Attack");*/
             SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_UPSLASH, true);
+        }
+    }
+    public void OnDefend(InputValue value)
+    {
+        var a = value.Get<float>();
+        DefendMode = a > 0;
+
+        if (IsOwner && IsClient)
+        {
+            //DefendServerRpc(DefendMode); 
+            SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_DEFEND, DefendMode);
+            //_animator.SetBool("isDefend",DefendMode);
+        }
+
+
+    }
+    public void OnDefend_Switch(InputValue value)
+    {
+        DefendMode = !DefendMode;
+        if (IsOwner && IsClient)
+        {
+            //DefendServerRpc(DefendMode); 
+            SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_DEFEND, DefendMode);
+            //_animator.SetBool("isDefend",DefendMode);
         }
     }
 }

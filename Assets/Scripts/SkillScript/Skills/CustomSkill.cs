@@ -14,13 +14,13 @@ namespace DataClass.Skills
         {
             effects = new List<EffectBase>();
         }
-        private void AddDamage(EntityProps entity,float _baseValue, float _coeffValue , float _pierceCoeff = 1,float _pierceBase = 0,DamageType _damageType = DamageType.Physics,AttriTypes _attriType = AttriTypes.atk)
+        private void AddDamage(EntityProps entity,float _baseValue, float _coeffValue , float _pierceCoeff = 1,float _pierceBase = 0,EDamageType _damageType = EDamageType.Physics,EAttriTypes _attriType = EAttriTypes.atk)
         {
             var d = new DamageCause(entity, _baseValue, _coeffValue, _pierceCoeff, _pierceBase, _damageType, _attriType);
             effects.Add(d);
         }
 
-        private void AddBuff(EntityProps entity, BuffTypes _type, float _lastTime)
+        private void AddBuff(EntityProps entity, EBuffTypes _type, float _lastTime)
         {
             effects.Add(new BuffCause(entity,_lastTime, _type));
         }

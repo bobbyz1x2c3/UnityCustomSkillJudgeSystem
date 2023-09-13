@@ -104,5 +104,10 @@ public class TotalManager : MonoBehaviour
         }
         return null;
     }
+
+    public static Animator GetAnimatorByID(ulong ID)
+    {
+        return GetEntityByID(ID).GetComponentInChildren<Animator>();
+    }
     
 }

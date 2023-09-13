@@ -25,19 +25,19 @@ public class EntityProps : MonoBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == BuffTypes.atk_down_10p)
+                if (buff.Type == EBuffTypes.atk_down_10p)
                 {
                     Coeff -= 0.1f;
                 }
-                else if (buff.Type == BuffTypes.atk_up_10p)
+                else if (buff.Type == EBuffTypes.atk_up_10p)
                 {
                     Coeff += 0.1f;
                 }
-                else if(buff.Type == BuffTypes.atk_down_10)
+                else if(buff.Type == EBuffTypes.atk_down_10)
                 {
                     Fix -= 10;
                 }
-                else if(buff.Type == BuffTypes.atk_up_10)
+                else if(buff.Type == EBuffTypes.atk_up_10)
                 {
                     Fix += 10;
                 }
@@ -55,19 +55,19 @@ public class EntityProps : MonoBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == BuffTypes.mag_down_10p)
+                if (buff.Type == EBuffTypes.mag_down_10p)
                 {
                     Coeff -= 0.1f;
                 }
-                else if (buff.Type == BuffTypes.mag_up_10p)
+                else if (buff.Type == EBuffTypes.mag_up_10p)
                 {
                     Coeff += 0.1f;
                 }
-                else if(buff.Type == BuffTypes.mag_down_10)
+                else if(buff.Type == EBuffTypes.mag_down_10)
                 {
                     Fix -= 10;
                 }
-                else if(buff.Type == BuffTypes.mag_up_10)
+                else if(buff.Type == EBuffTypes.mag_up_10)
                 {
                     Fix += 10;
                 }
@@ -86,19 +86,19 @@ public class EntityProps : MonoBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == BuffTypes.arm_down_10p)
+                if (buff.Type == EBuffTypes.arm_down_10p)
                 {
                     Coeff -= 0.1f;
                 }
-                else if (buff.Type == BuffTypes.arm_up_10p)
+                else if (buff.Type == EBuffTypes.arm_up_10p)
                 {
                     Coeff += 0.1f;
                 }
-                else if(buff.Type == BuffTypes.arm_down_10)
+                else if(buff.Type == EBuffTypes.arm_down_10)
                 {
                     Fix -= 10;
                 }
-                else if(buff.Type == BuffTypes.arm_up_10)
+                else if(buff.Type == EBuffTypes.arm_up_10)
                 {
                     Fix += 10;
                 }

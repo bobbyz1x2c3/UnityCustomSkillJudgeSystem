@@ -1,33 +1,65 @@
-﻿using UnityEngine;
+﻿using DataClass.Enums;
+using Unity.Netcode;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace DataClass.Effection
 {
     [CreateAssetMenu(menuName = "CustomEffect/PostureReduce")]
-    public class PostureReduce : EffectBase
+    public class PostureReduce : EffectBase , INetworkSerializable
     {
+        //deprecated
         private EntityProps from { get; set; }
-        private EntityNetWorkProps netFrom;
-        [Tooltip("the coeffience of Posture damage")]
-        public float Coeff { get; set; }
 
-        public PostureReduce()
+        [FormerlySerializedAs("Coeff")] [Tooltip("the coeffience of Posture damage")]
+        public float Value;
+
+        private const float BLOCK_COEFF = 0.2f;
+
+        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
-            Coeff = 1;
+            NetworkSerializeImpl(serializer);
         }
 
-        public PostureReduce(float coeff)
+        protected override void NetworkSerializeImpl<T>(BufferSerializer<T> serializer)
         {
-            Coeff = coeff;
+            base.NetworkSerializeImpl(serializer);
+            serializer.SerializeValue(ref Value);     
+        }
+
+        public override EEffectType GetEffectType()
+        {
+            return EEffectType.PostureReduce;
+        }
+        
+        public PostureReduce()
+        {
+            Value = 1;
+        }
+
+        public PostureReduce(float value)
+        {
+            Value = value;
         }
         public override int Execute(EntityProps to)
         {
-            to.prop.Posture -= Coeff;
+            to.prop.Posture -= Value;
             return 0;
         }
 
         public override int Execute(EntityNetWorkProps to)
         {
-            to.GetPostureReduce(Coeff);
+            //要判断被击的状态
+            var a = to.GetComponentInChildren<Animator>();
+            if (Shortcuts.CharacterAnimatorUtils.isAnimationBlocking(a))
+            {
+                to.GetPostureReduce(BLOCK_COEFF * Value);
+            }
+            else
+            {
+                to.GetPostureReduce(Value);
+            }
+
             return 0;;
         }
     }

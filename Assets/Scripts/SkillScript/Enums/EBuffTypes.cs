@@ -1,6 +1,6 @@
 ﻿namespace DataClass.Enums
 {
-    public enum BuffTypes
+    public enum EBuffTypes
     {
         atk_down_10p,
         atk_up_10p,

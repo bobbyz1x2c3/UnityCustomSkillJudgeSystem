@@ -24,7 +24,7 @@ namespace DataClass.Skills
         {
             foreach (var vaEffect in effects)
             {
-                vaEffect.network_from = origin;
+                vaEffect.netFrom = origin;
             }
             
         }

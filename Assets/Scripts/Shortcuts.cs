@@ -85,7 +85,7 @@ namespace Shortcuts
 
         public static bool isAnimationUpslash(Animator _animator)
         {
-            return _animator.GetCurrentAnimatorStateInfo(AnimationKeys.ATTACK_LAYER).IsName(AnimationKeys.UPSLASH);
+            return (_animator?.GetCurrentAnimatorStateInfo(AnimationKeys.ATTACK_LAYER).IsName(AnimationKeys.UPSLASH)).Value;
         }
 
         public static bool isAnimationOccupied(Animator _animator)
@@ -95,6 +95,11 @@ namespace Shortcuts
                    || isAnimationCombo(_animator)
                    || isAnimationUpslash(_animator);
 
+        }
+
+        public static bool isAnimationBlocking(Animator _animator)
+        {
+            return (_animator?.GetCurrentAnimatorStateInfo(AnimationKeys.BLENDABLE_LAYER).IsName(AnimationKeys.BLOCKING)).Value;
         }
 
         #endregion

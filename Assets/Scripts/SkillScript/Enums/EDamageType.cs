@@ -1,6 +1,6 @@
 ﻿namespace DataClass.Enums
 {
-    public enum DamageType
+    public enum EDamageType
     {
         Physics,
         Magic

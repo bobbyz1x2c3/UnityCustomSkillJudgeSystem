@@ -112,7 +112,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
     public float TargetFaceAngle = 0f;
     public bool AbleToMove = false;
     private Vector2 lastInputFaceValue = Vector2.zero;
-    private Animator _animator;
+    public Animator _animator;
 
     private Rigidbody _rigidbody;
     public Vector3 CurrentSpeed;
@@ -480,6 +480,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
         {
             //DefendServerRpc(DefendMode); 
             SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_DEFEND, DefendMode);
+            
             //_animator.SetBool("isDefend",DefendMode);
         }
 
@@ -492,6 +493,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
         {
             //DefendServerRpc(DefendMode); 
             SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_DEFEND, DefendMode);
+            
             //_animator.SetBool("isDefend",DefendMode);
         }
     }

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using DataClass.Effection;
-using DataClass.Enums;
-using Unity.Netcode;
+using SkillScript.Effection;
+using SkillScript.Enums;
 using UnityEngine;
 
-namespace DataClass.Skills
+namespace SkillScript.Skills
 {
     [CreateAssetMenu(menuName = "CustomSingleSkill")]
     public class CustomSkill : SkillBase

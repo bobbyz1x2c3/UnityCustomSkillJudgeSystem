@@ -1,4 +1,4 @@
-﻿namespace DataClass.Enums
+﻿namespace SkillScript.Enums
 {
     public enum EDamageType
     {

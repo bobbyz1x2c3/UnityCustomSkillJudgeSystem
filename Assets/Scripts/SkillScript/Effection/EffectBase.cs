@@ -1,10 +1,10 @@
-﻿using DataClass.Enums;
+﻿using SkillScript.Enums;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace DataClass.Effection
+namespace SkillScript.Effection
 {
-    public abstract class EffectBase : ScriptableObject 
+    public abstract class EffectBase : ScriptableObject ,INetworkSerializable
     {
 
         
@@ -12,6 +12,7 @@ namespace DataClass.Effection
         public EntityNetWorkProps netFrom;
         public ulong netFromId;
 
+        public abstract void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter;
 
         protected virtual void NetworkSerializeImpl<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         { 
@@ -21,7 +22,7 @@ namespace DataClass.Effection
             netFrom = TotalManager.GetEntityByID(netFromId);
         }
 
-        public abstract int Execute( EntityProps to);
+        //public abstract int Execute( EntityProps to);
         public abstract int Execute(EntityNetWorkProps to);
         
         public abstract EEffectType GetEffectType();

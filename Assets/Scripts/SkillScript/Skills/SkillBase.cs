@@ -1,16 +1,15 @@
-﻿
-using System.Collections.Generic;
-using DataClass.Effection;
+﻿using System.Collections.Generic;
+using SkillScript.Effection;
 using UnityEngine;
 
-namespace DataClass.Skills
+namespace SkillScript.Skills
 {
     
     public abstract class SkillBase : ScriptableObject
     {
         
         public List<EffectBase> effects;
-        public int Execute(EntityProps to)
+        /*public int Execute(EntityProps to)
         {
             foreach (var vaEffect in effects)
             {
@@ -18,7 +17,7 @@ namespace DataClass.Skills
                 Debug.Log(vaEffect.ToString());
             }
             return 0;
-        }
+        }*/
 
         public void SetEffectOrigin(EntityNetWorkProps origin)
         {

@@ -1,15 +1,22 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DataClass;
-using DataClass.Effection;
-using DataClass.Enums;
-using DataClass.Skills;
 using DataClass.Structs;
+using SkillScript.Effection;
+using SkillScript.Enums;
+using SkillScript.Skills;
 using Unity.Netcode;
 using UnityEngine;
 
-public class EntityNetWorkProps : NetworkBehaviour
+#region Utils
+
+
+
+#endregion
+
+public class EntityNetWorkProps : NetworkBehaviour , INetworkUpdateSystem
 {
     public static EntityNetWorkProps LocalEntityNetWorkProp;
     //public NetworkVariable<List<Buff>> buffss;
@@ -17,6 +24,7 @@ public class EntityNetWorkProps : NetworkBehaviour
     public NetworkList<Buff> buffs;
 
     public NetworkVariable<ulong> id;
+    public NetworkVariable<EEntityTypes> entityType;    
 
 
     public float C_ATK
@@ -27,21 +35,21 @@ public class EntityNetWorkProps : NetworkBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == EBuffTypes.atk_down_10p)
+                if (buff.type == EBuffTypes.atk_down_ratio)
                 {
-                    Coeff -= 0.1f;
+                    Coeff -= buff.value;
                 }
-                else if (buff.Type == EBuffTypes.atk_up_10p)
+                else if (buff.type == EBuffTypes.atk_up_ratio)
                 {
-                    Coeff += 0.1f;
+                    Coeff += buff.value;
                 }
-                else if(buff.Type == EBuffTypes.atk_down_10)
+                else if(buff.type == EBuffTypes.atk_down)
                 {
-                    Fix -= 10;
+                    Fix -= buff.value;
                 }
-                else if(buff.Type == EBuffTypes.atk_up_10)
+                else if(buff.type == EBuffTypes.atk_up)
                 {
-                    Fix += 10;
+                    Fix += buff.value;
                 }
                 
             }
@@ -56,21 +64,21 @@ public class EntityNetWorkProps : NetworkBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == EBuffTypes.mag_down_10p)
+                if (buff.type == EBuffTypes.mag_down_ratio)
                 {
-                    Coeff -= 0.1f;
+                    Coeff -= buff.value;
                 }
-                else if (buff.Type == EBuffTypes.mag_up_10p)
+                else if (buff.type == EBuffTypes.mag_up_ratio)
                 {
-                    Coeff += 0.1f;
+                    Coeff += buff.value;
                 }
-                else if(buff.Type == EBuffTypes.mag_down_10)
+                else if(buff.type == EBuffTypes.mag_down)
                 {
-                    Fix -= 10;
+                    Fix -= buff.value;
                 }
-                else if(buff.Type == EBuffTypes.mag_up_10)
+                else if(buff.type == EBuffTypes.mag_up)
                 {
-                    Fix += 10;
+                    Fix += buff.value;
                 }
 
             }
@@ -85,21 +93,21 @@ public class EntityNetWorkProps : NetworkBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == EBuffTypes.arm_down_10p)
+                if (buff.type == EBuffTypes.arm_down_ratio)
                 {
-                    Coeff -= 0.1f;
+                    Coeff -= buff.value;
                 }
-                else if (buff.Type == EBuffTypes.arm_up_10p)
+                else if (buff.type == EBuffTypes.arm_up_ratio)
                 {
-                    Coeff += 0.1f;
+                    Coeff += buff.value;
                 }
-                else if(buff.Type == EBuffTypes.arm_down_10)
+                else if(buff.type == EBuffTypes.arm_down)
                 {
-                    Fix -= 10;
+                    Fix -= buff.value;
                 }
-                else if(buff.Type == EBuffTypes.arm_up_10)
+                else if(buff.type == EBuffTypes.arm_up)
                 {
-                    Fix += 10;
+                    Fix += buff.value;
                 }
 
             }
@@ -107,37 +115,44 @@ public class EntityNetWorkProps : NetworkBehaviour
         }
     }
 
-    public bool IsDead
+    public bool IsDead => prop.Value.HP <= 0;
+
+    public bool IsPlayer => !IsNPC;
+
+    public bool IsNPC =>
+        entityType.Value == EEntityTypes.EnemyNPCCharacter ||
+        entityType.Value == EEntityTypes.FriendNPCCharacter;
+
+
+    public delegate void OnNetworkUpdateDelegate();
+    public event OnNetworkUpdateDelegate OnNetworkUpdateEvent;
+    public void NetworkUpdate(NetworkUpdateStage updateStage)
     {
-        get
-        {
-            return prop.Value.HP <= 0;
-        }
+        OnNetworkUpdateEvent?.Invoke();
+        
     }
+
     private void OnEnable()
     {
         buffs = new NetworkList<Buff>();
-        
-    }
-
-    private void Start()
-    {
-        
-
     }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        
+        this.RegisterNetworkUpdate(NetworkUpdateStage.FixedUpdate);
+        //下面的写法也一样的
+        //NetworkUpdateLoop.RegisterNetworkUpdate(this,NetworkUpdateStage.FixedUpdate);
         if(IsOwner && IsClient)
         {
             LocalEntityNetWorkProp = this;
+            //todo
             GenerateServerRPC(NetworkManager.Singleton.LocalClientId);
             Debug.Log("client id:"+id.Value);
         }
     }
 
+    
     [ServerRpc]
     public void GenerateServerRPC(ulong ID)
     {
@@ -159,6 +174,8 @@ public class EntityNetWorkProps : NetworkBehaviour
             spd = 100
         };
         buffs = new NetworkList<Buff>();
+        buffs.Initialize(this);
+        entityType.Value = EEntityTypes.PlayerCharacter;
     }
     [ServerRpc]
     public void GetDamageServerRPC(float damage)
@@ -190,14 +207,12 @@ public class EntityNetWorkProps : NetworkBehaviour
         var b = Resources.Load<DamageCause>("test/aaa");
         b.netFrom = this;
         b.Execute(TotalManager.GetEntityByID(ID));
-       ShowPropInfo(TotalManager.GetEntityByID(ID));
     }
 
     #region 哥们直接判断类型封装，嘻嘻
     [ServerRpc]
     public void BuffCauseServerRPC(BuffCause _eb, ulong ID)
     {
-
         EffectExecute(_eb, ID);
     }
     [ServerRpc]
@@ -210,6 +225,16 @@ public class EntityNetWorkProps : NetworkBehaviour
     {
         EffectExecute(_eb, ID);
     }
+    [ServerRpc]
+    public void BuffRemoveServerRPC(BuffRemove _eb, ulong ID)
+    {
+        EffectExecute(_eb, ID);
+    }
+    [ServerRpc]
+    public void HealCauseServerRPC(HealCause _eb, ulong ID){
+        EffectExecute(_eb, ID);
+    }
+
     /// <summary>
     /// 在Server执行
     /// </summary>
@@ -221,7 +246,11 @@ public class EntityNetWorkProps : NetworkBehaviour
         _eb.netFrom = this;
         _eb.netFromId = id.Value;
         _eb.Execute(TotalManager.GetEntityByID(ID));
-        ShowPropInfo(TotalManager.GetEntityByID(ID));
+#if UNITY_EDITOR
+        //todo hideme
+        TotalManager.GetEntityByID(ID).ShowPropInfo();
+#endif 
+        
     }
     /// <summary>
     /// 在客户端调用
@@ -241,11 +270,18 @@ public class EntityNetWorkProps : NetworkBehaviour
             case EEffectType.PostureReduce:
                 PostureReduceServerRPC(_eb as PostureReduce, ID);
                 break;
+            case EEffectType.BuffRemove:
+                BuffRemoveServerRPC(_eb as BuffRemove, ID);
+                break;
+            case EEffectType.HealCause: 
+                HealCauseServerRPC(_eb as HealCause, ID);
+                break;                
         }
     }
 
     public void SkillRequest(SkillBase paramSkill, ulong ID)
     {
+        Debug.Log(paramSkill);
         foreach (var VARIABLE in paramSkill.effects)
         {
             Debug.Log("a1"+VARIABLE.GetEffectType());
@@ -268,15 +304,21 @@ public class EntityNetWorkProps : NetworkBehaviour
     {
         buffs.Initialize(this);
         buffs.Add(buff);
-        yield return new WaitForSeconds(buff.lastTime);
+        if(buff.duration < -0.9f) yield break;
+        yield return new WaitForSeconds(buff.duration);
         buffs.Remove(buff);
-        Debug.Log("buff end"+buff.Type);    
+        //Debug.Log("buff end"+buff.Type);    
     }
     public void GetBuff(Buff buff)
     {
         //FIXME
         StartCoroutine(BuffTimer(buff));       
         
+    }
+    
+    public void RemoveBuff(Buff buff)
+    {
+        buffs.Remove(buff);
     }
 
     public void GetPostureReduce(float value)
@@ -287,20 +329,26 @@ public class EntityNetWorkProps : NetworkBehaviour
     }
 
 
-
-    #region Utils
-
-    public static void ShowPropInfo(EntityNetWorkProps _param)
+    public bool IsFriend(EntityNetWorkProps prop1)
     {
-        Debug.Log(_param.id.Value + "HP:" + _param.prop.Value.HP + "Posture:" + _param.prop.Value.Posture + "Speed:" + _param.prop.Value.spd + "Attack:" + _param.prop.Value.atk + "Defence:" + _param.prop.Value.arm);
-        Debug.Log("buffs:" + _param.buffs.Count);
-        foreach (var VARIABLE in _param.buffs)
+        if (prop1.entityType.Value == EEntityTypes.FriendNPCCharacter ||
+            entityType.Value == EEntityTypes.FriendNPCCharacter || 
+            prop1.entityType.Value == entityType.Value)
         {
-            Debug.Log(VARIABLE.Type.ToString() + ":" + VARIABLE.lastTime);
+            return true;
+        }
+        return false;
+    }
+    public void ShowPropInfo()
+    {
+        Debug.Log(id.Value + "HP:" + prop.Value.HP + "Posture:" + prop.Value.Posture + "Speed:" + prop.Value.spd + "Attack:" + prop.Value.atk + "Defence:" + prop.Value.arm);
+        Debug.Log("buffs:" + buffs.Count);
+        foreach (var VARIABLE in buffs)
+        {
+            Debug.Log(VARIABLE.type.ToString() + ":" + VARIABLE.duration);
         }
     }
 
-    #endregion
 
   
 

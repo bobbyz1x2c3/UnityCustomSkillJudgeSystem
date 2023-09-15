@@ -1,12 +1,11 @@
-﻿using DataClass.Enums;
-using Unity.Mathematics;
+﻿using SkillScript.Enums;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace DataClass.Effection
+namespace SkillScript.Effection
 {
     [CreateAssetMenu(menuName = "CustomEffect/DamageCause")]
-    public class DamageCause : EffectBase , INetworkSerializable
+    public class DamageCause : EffectBase
     {
         private EntityProps from;
         private const float DEF_BASE = 10000f;
@@ -31,7 +30,7 @@ namespace DataClass.Effection
             serializer.SerializeValue(ref _AttriType);            
             netFrom = TotalManager.GetEntityByID(netFromId);
         }*/
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        public override void NetworkSerialize<T>(BufferSerializer<T> serializer)
         {
             NetworkSerializeImpl(serializer);
         }
@@ -88,7 +87,7 @@ namespace DataClass.Effection
             
         }
         
-        public override int Execute(EntityProps to)
+        /*public override int Execute(EntityProps to)
         {
             float value = 0;
             switch (_AttriType)
@@ -125,11 +124,25 @@ namespace DataClass.Effection
             to.GetDamage(value);
             return 0;
             
-        }
-
+        }*/
+/// <summary>
+/// 
+/// [伤害结算流程]
+/// 1. 计算伤害值（或许以后会有暴击呢）
+/// coefficience * 标定类型 + fix
+/// 2. 根据防御力计算减伤系数
+/// 减防公式 1 - x/sqrt(x^2+DEF_BASE)
+/// 3. 计算伤害值
+/// 4. 特殊buff结算
+/// 5. 格挡结算
+/// 6. 伤害结算
+/// </summary>
+/// <param name="to"></param>
+/// <returns></returns>
         public override int Execute(EntityNetWorkProps to)
         {
             float value = 0;
+            
             switch (_AttriType)
             {
                 
@@ -153,15 +166,47 @@ namespace DataClass.Effection
                     value = 0;
                     break;
             }
-            
+
+
+
             float def = (PierceCoeffValue * to.C_ARM)-PierceBaseValue;
             Debug.Log("防御"+def+"，攻击值"+value);
             //减防公式 1 - x/sqrt(x^2+DEF_BASE)
             value *= 1-def/Mathf.Sqrt(Mathf.Pow(def,2) + DEF_BASE);
             Debug.Log("减伤系数"+(1-def/Mathf.Sqrt(Mathf.Pow(def,2) + DEF_BASE))+"，折后攻击值"+value);
             
+            //特殊buff带来的效果
+            float coeff = 1;
+            float fix = 0;
+            float block_coeff = 1;
+            foreach (var _buff in netFrom.buffs)
+            {
+                switch (_buff.type)
+                {
+                    case EBuffTypes.Damage_reduce:
+                        fix -= _buff.value;
+                        break;
+                    case EBuffTypes.Damage_ratio:
+                        coeff *= _buff.value;
+                        break;
+                    case EBuffTypes.Damage_amp:
+                        fix += _buff.value;
+                        break;
+
+                }
+            }
+            foreach (var _buff in to.buffs)
+            {
+                switch (_buff.type)
+                {
+                    case EBuffTypes.Blocking:
+                        block_coeff = 0.1f;
+                        break;
+                }
+            }
+            value = block_coeff * (value * coeff + fix);
             //to.GetDamageServerRPC(value);
-            to.GetDamage(value);
+            to.GetDamage(value > 0?value : 0);
             return 0;
         }
     }

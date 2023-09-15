@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using DataClass.Effection;
+using SkillScript.Effection;
 using UnityEngine;
 
 public class SkillJudge : MonoBehaviour

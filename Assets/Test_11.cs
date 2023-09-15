@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using DataClass.Effection;
-using DataClass.Enums;
 using DataClass.Structs;
 using Unity.Netcode;
 using UnityEngine;

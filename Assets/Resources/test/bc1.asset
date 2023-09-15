@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cc209e5dc73438488af719f1a642b89, type: 3}
-  m_Name: aaa
+  m_Script: {fileID: 11500000, guid: f63740d441ab21843aadcb69bd1a302b, type: 3}
+  m_Name: bc1
   m_EditorClassIdentifier: 
-  _DamageType: 0
-  BaseValue: 0
-  CoeffValue: 1
-  PierceCoeffValue: 1
-  PierceBaseValue: 0
-  _AttriType: 7
+  netFrom: {fileID: 0}
+  netFromId: 0
+  buff:
+    type: 3
+    value: 13
+    duration: 1

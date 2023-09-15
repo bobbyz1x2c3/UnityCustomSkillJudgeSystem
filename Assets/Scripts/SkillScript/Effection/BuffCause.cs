@@ -1,16 +1,17 @@
-﻿using DataClass.Enums;
+﻿using DataClass;
+using SkillScript.Enums;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace DataClass.Effection
+namespace SkillScript.Effection
 {
     [CreateAssetMenu(menuName = "CustomEffect/BuffCause")]
-    public class BuffCause : EffectBase, INetworkSerializable
+    public class BuffCause : EffectBase 
     {
         private EntityProps from { get; set; }
 
         public Buff buff;
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        public override void NetworkSerialize<T>(BufferSerializer<T> serializer)
         {
             NetworkSerializeImpl(serializer);
         }
@@ -21,34 +22,35 @@ namespace DataClass.Effection
             
         }
 
-        public BuffCause(float _lastTime, EBuffTypes _type)
+        public BuffCause(float duration, EBuffTypes _type)
         {
-            buff.Type = _type;
-            buff.lastTime = _lastTime;
+            buff.type = _type;
+            buff.duration = duration;
         }
-        public BuffCause(EntityProps from,float _lastTime, EBuffTypes _type)
+        public BuffCause(EntityProps from,float duration, EBuffTypes _type)
         {
-            buff.Type = _type;
-            buff.lastTime = _lastTime;
+            buff.type = _type;
+            buff.duration = duration;
         }
         public BuffCause()
         {
-            buff.Type = EBuffTypes.atk_up_10p;
-            buff.lastTime = 1;
+            buff.type = EBuffTypes.atk_up_ratio;
+            buff.duration = 1;
         }
-        public override int Execute(EntityProps to)
+        /*public override int Execute(EntityProps to)
         {
             Debug.Log("对"+to.ToString()+"造成buff："+buff.Type);
-            /*to.buffs.Add(buff);*/
+            /*to.buffs.Add(buff);#1#
             to.GetBuff(buff);
             return 0;
-        }
+        }*/
 
         public override int Execute(EntityNetWorkProps to)
         {
             to.GetBuff(buff);
             return 0;
         }
+        
 
         public override EEffectType GetEffectType()
         {

@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DataClass;
-using DataClass.Enums;
-using DataClass.Skills;
 using DataClass.Structs;
+using SkillScript.Enums;
+using SkillScript.Skills;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -25,19 +25,19 @@ public class EntityProps : MonoBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == EBuffTypes.atk_down_10p)
+                if (buff.type == EBuffTypes.atk_down_ratio)
                 {
                     Coeff -= 0.1f;
                 }
-                else if (buff.Type == EBuffTypes.atk_up_10p)
+                else if (buff.type == EBuffTypes.atk_up_ratio)
                 {
                     Coeff += 0.1f;
                 }
-                else if(buff.Type == EBuffTypes.atk_down_10)
+                else if(buff.type == EBuffTypes.atk_down)
                 {
                     Fix -= 10;
                 }
-                else if(buff.Type == EBuffTypes.atk_up_10)
+                else if(buff.type == EBuffTypes.atk_up)
                 {
                     Fix += 10;
                 }
@@ -55,19 +55,19 @@ public class EntityProps : MonoBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == EBuffTypes.mag_down_10p)
+                if (buff.type == EBuffTypes.mag_down_ratio)
                 {
                     Coeff -= 0.1f;
                 }
-                else if (buff.Type == EBuffTypes.mag_up_10p)
+                else if (buff.type == EBuffTypes.mag_up_ratio)
                 {
                     Coeff += 0.1f;
                 }
-                else if(buff.Type == EBuffTypes.mag_down_10)
+                else if(buff.type == EBuffTypes.mag_down)
                 {
                     Fix -= 10;
                 }
-                else if(buff.Type == EBuffTypes.mag_up_10)
+                else if(buff.type == EBuffTypes.mag_up)
                 {
                     Fix += 10;
                 }
@@ -86,19 +86,19 @@ public class EntityProps : MonoBehaviour
             float Fix = 0;
             foreach (var buff in buffs)
             {
-                if (buff.Type == EBuffTypes.arm_down_10p)
+                if (buff.type == EBuffTypes.arm_down_ratio)
                 {
                     Coeff -= 0.1f;
                 }
-                else if (buff.Type == EBuffTypes.arm_up_10p)
+                else if (buff.type == EBuffTypes.arm_up_ratio)
                 {
                     Coeff += 0.1f;
                 }
-                else if(buff.Type == EBuffTypes.arm_down_10)
+                else if(buff.type == EBuffTypes.arm_down)
                 {
                     Fix -= 10;
                 }
-                else if(buff.Type == EBuffTypes.arm_up_10)
+                else if(buff.type == EBuffTypes.arm_up)
                 {
                     Fix += 10;
                 }
@@ -180,11 +180,7 @@ public class EntityProps : MonoBehaviour
         return prop.HP <= 0? 0 : 1;
         OnPropUpdateCallback();
     }
-
-    public void TestSkill(int index)
-    {
-        SkillBases[index].Execute(SkillTarget);
-    }
+    
 
     // public void TestSkill_ATK_UP()
     // {
@@ -211,8 +207,8 @@ public class EntityProps : MonoBehaviour
         buffs.Add(buff);
         IEnumerator buffExist()
         {
-            yield return new WaitForSeconds(buff.lastTime);
-            Debug.Log(buff.Type + "removed");
+            yield return new WaitForSeconds(buff.duration);
+            Debug.Log(buff.type + "removed");
             
             buffs.Remove(buff);
         }

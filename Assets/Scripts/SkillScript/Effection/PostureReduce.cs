@@ -1,12 +1,12 @@
-﻿using DataClass.Enums;
+﻿using SkillScript.Enums;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace DataClass.Effection
+namespace SkillScript.Effection
 {
     [CreateAssetMenu(menuName = "CustomEffect/PostureReduce")]
-    public class PostureReduce : EffectBase , INetworkSerializable
+    public class PostureReduce : EffectBase
     {
         //deprecated
         private EntityProps from { get; set; }
@@ -16,7 +16,7 @@ namespace DataClass.Effection
 
         private const float BLOCK_COEFF = 0.2f;
 
-        public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+        public override void NetworkSerialize<T>(BufferSerializer<T> serializer)
         {
             NetworkSerializeImpl(serializer);
         }
@@ -41,26 +41,35 @@ namespace DataClass.Effection
         {
             Value = value;
         }
-        public override int Execute(EntityProps to)
+        /*public override int Execute(EntityProps to)
         {
             to.prop.Posture -= Value;
             return 0;
-        }
+        }*/
 
         public override int Execute(EntityNetWorkProps to)
         {
+            //fixme 不够优雅
             //要判断被击的状态
-            var a = to.GetComponentInChildren<Animator>();
-            if (Shortcuts.CharacterAnimatorUtils.isAnimationBlocking(a))
+            if (to.IsPlayer)
             {
-                to.GetPostureReduce(BLOCK_COEFF * Value);
+                var a = to.GetComponentInChildren<Animator>();
+                
+                if (a != null && Shortcuts.CharacterAnimatorUtils.isAnimationBlocking(a))
+                {
+                    to.GetPostureReduce(BLOCK_COEFF * Value);
+                }
+                else
+                {
+                    to.GetPostureReduce(Value);
+                }
             }
             else
             {
                 to.GetPostureReduce(Value);
             }
 
-            return 0;;
+            return 0;
         }
     }
 }

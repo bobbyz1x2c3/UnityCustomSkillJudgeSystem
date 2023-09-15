@@ -1,9 +1,12 @@
-﻿namespace DataClass.Enums
+﻿namespace SkillScript.Enums
 {
     public enum EEffectType
     {
         BuffCause,
+        BuffRemove,
         DamageCause,
-        PostureReduce
+        PostureReduce,
+        HealCause
+        
     }
 }

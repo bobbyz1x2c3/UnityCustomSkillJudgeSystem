@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NetworkCharacter;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BlockAnimStateMachine : StateMachineBehaviour
 {
-    [SerializeField]
-    NetworkCharacterPropManager.NetworkCharacterPropManager networkCharacterPropManager = null;
+    [FormerlySerializedAs("networkCharacterPropManager")] [SerializeField]
+    NetworkCharacterPropHandler networkCharacterPropHandler = null;
     private void OnEnable()
     {
 
@@ -15,11 +17,11 @@ public class BlockAnimStateMachine : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (networkCharacterPropManager == null)
+        if (networkCharacterPropHandler == null)
         {
-            networkCharacterPropManager = animator.GetComponentInParent<NetworkCharacterPropManager.NetworkCharacterPropManager>();
+            networkCharacterPropHandler = animator.GetComponentInParent<NetworkCharacterPropHandler>();
         }
-        networkCharacterPropManager.StartBlock();
+        networkCharacterPropHandler.StartBlock();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -31,7 +33,7 @@ public class BlockAnimStateMachine : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        networkCharacterPropManager.EndBlock();
+        networkCharacterPropHandler.EndBlock();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

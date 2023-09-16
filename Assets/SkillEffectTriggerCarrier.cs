@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using SkillScript.Skills;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SkillEffectTriggerCarrier : MonoBehaviour
 {
     // Start is called before the first frame update
     EntityNetWorkProps selfProps;
-    [SerializeField]
-    private SkillBase _skill;
+    [FormerlySerializedAs("_skill")] [SerializeField]
+    public SkillEffectionsBase skillEffections;
     private void Start()
     {
         selfProps = GetComponentInParent<EntityNetWorkProps>();
@@ -35,7 +36,7 @@ public class SkillEffectTriggerCarrier : MonoBehaviour
         {
             
             Debug.Log(selfProps.id.Value+" :attack ->" +prop.id.Value);
-            selfProps.SkillRequest(_skill, prop.id.Value);
+            selfProps.SkillRequest(skillEffections, prop.id.Value);
 
         }
     }

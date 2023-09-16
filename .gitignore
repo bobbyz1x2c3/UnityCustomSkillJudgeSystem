@@ -10,3 +10,4 @@
 /UserSettings
 .vsconfig
 *.cache
+*.meta

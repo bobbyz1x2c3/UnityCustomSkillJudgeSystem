@@ -21,8 +21,8 @@ public class AttackOver : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
        //animator.ResetTrigger("Attack");
-       animator.SetBool(Shortcuts.AnimationKeys.PARAM_IS_ATTACK,false);
-       animator.SetBool(Shortcuts.AnimationKeys.PARAM_IS_UPSLASH,false);
+       animator.SetBool(Shortcuts.AnimationKeys.Params.IS_ATTACK,false);
+       animator.SetBool(Shortcuts.AnimationKeys.Params.IS_UPSLASH,false);
        //Debug.Log(stateInfo.ToString() + "exit");
     }
 

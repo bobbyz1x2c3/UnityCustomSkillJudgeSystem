@@ -109,7 +109,7 @@ public class EntityProps : MonoBehaviour
     }
     
 
-    public List<CustomSkill> SkillBases;
+    public List<CustomSkillEffections> SkillBases;
 
 
     public EntityProps SkillTarget;
@@ -140,7 +140,7 @@ public class EntityProps : MonoBehaviour
         prop.mag = 10;
         prop.Posture = 100;
         buffs = new List<Buff>();
-        SkillBases = new List<CustomSkill>();
+        SkillBases = new List<CustomSkillEffections>();
         
     }
 

@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8adc3a6ae19a6e540aac6890de56c1ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skill: {fileID: 11400000, guid: 4828bbf7e091bd544859e99edccbf7a6, type: 2}
+  skillEffections: {fileID: 11400000, guid: 4828bbf7e091bd544859e99edccbf7a6, type: 2}
 --- !u!1 &1633173459540469736
 GameObject:
   m_ObjectHideFlags: 0
@@ -884,7 +884,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8adc3a6ae19a6e540aac6890de56c1ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skill: {fileID: 11400000, guid: 4828bbf7e091bd544859e99edccbf7a6, type: 2}
+  skillEffections: {fileID: 11400000, guid: 4828bbf7e091bd544859e99edccbf7a6, type: 2}
 --- !u!1 &7125634935732459698
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,8 +915,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125634935732459698}
-  m_LocalRotation: {x: 0.081669606, y: 0.80482996, z: -0.11397534, w: 0.5767049}
-  m_LocalPosition: {x: -8.634003, y: 2.9786763, z: 2.9312932}
+  m_LocalRotation: {x: 0.27295488, y: 0.479021, z: -0.15967375, w: 0.81886435}
+  m_LocalPosition: {x: -5.2300415, y: 4.5, z: -2.9405172}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1095,13 +1095,13 @@ MonoBehaviour:
         m_Calls: []
   m_LegacyBlendHint: 0
   m_YAxis:
-    Value: 0.58460337
+    Value: 1
     m_SpeedMode: 0
     m_MaxSpeed: 1
     m_AccelTime: 0.2
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
-    m_InputAxisValue: -4
+    m_InputAxisValue: 0
     m_InvertInput: 1
     m_MinValue: 0
     m_MaxValue: 1
@@ -1119,7 +1119,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 108.75265
+    Value: 60.65375
     m_SpeedMode: 0
     m_MaxSpeed: 100
     m_AccelTime: 0.1
@@ -1266,7 +1266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.9786763, z: -9.1180315}
+  m_FollowOffset: {x: 0, y: 4.5, z: -6}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1286,7 +1286,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 108.75265
+    Value: 60.65375
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
@@ -1346,7 +1346,10 @@ GameObject:
   - component: {fileID: 7125634935843963570}
   - component: {fileID: 7125634935843963580}
   - component: {fileID: 2239991599240706272}
+  - component: {fileID: 7346162982170276131}
   - component: {fileID: 6683956594510644485}
+  - component: {fileID: 1138959826925920943}
+  - component: {fileID: 6459677137535779809}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -1419,7 +1422,31 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e78b5fe3-9a2f-45d3-bb80-d7c5db44afd1
+    m_ActionName: MyInputMap/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9ffa091d-86e3-4323-9e6c-3d6ed7f1a148
+    m_ActionName: MyInputMap/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 43d39766-6abb-4436-b0f3-074c9eb4e005
+    m_ActionName: MyInputMap/Defend[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 40dce3ea-bac8-4032-9f4c-02e8ea4888fb
+    m_ActionName: MyInputMap/Attack[/Mouse/backButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cb83fc14-5772-49d9-8299-2e6923745c9f
+    m_ActionName: MyInputMap/Attack2[/Mouse/forwardButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b6236010-015b-4cba-87e7-3f434134b335
+    m_ActionName: MyInputMap/Defend_Switch[/Keyboard/q]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: MyInputMap
@@ -1451,6 +1478,19 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+--- !u!114 &7346162982170276131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125634935843963574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f09d7b08e5e4bc19c642d6fa90d4e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
 --- !u!114 &6683956594510644485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1468,12 +1508,45 @@ MonoBehaviour:
   RotateSpeed: 500
   TargetFaceAngle: 0
   AbleToMove: 0
+  lastInputFaceValue: {x: 0, y: 0}
   _animator: {fileID: 0}
   CurrentSpeed: {x: 0, y: 0, z: 0}
   TargetSpeed: {x: 0, y: 0}
   AccelerateRate: 100
   MaxSpeed: 10
   NetworkFixSpeed: {x: 0, y: 0, z: 0}
+--- !u!114 &1138959826925920943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125634935843963574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d2a648055a4f23a30467064a7539f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allSkillEffections: []
+  TriggerManager: {fileID: 0}
+  _animator: {fileID: 0}
+  AnimMsgParams: []
+--- !u!114 &6459677137535779809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7125634935843963574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 813c84575b2649869c53b1579517cd13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 0}
+  Block: {fileID: 11400000, guid: 38d5aba7115db70468cde79d990abfd2, type: 2}
+  UnBlock: {fileID: 11400000, guid: 7825033b4f79c9c4195ae6cf27ca39d3, type: 2}
+  postureRecoverRate: 10
 --- !u!1 &7125634936154701569
 GameObject:
   m_ObjectHideFlags: 3
@@ -1498,8 +1571,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125634936154701569}
-  m_LocalRotation: {x: 0.017195625, y: -0.000000029802319, z: 0.0000000074505797,
-    w: 0.9998522}
+  m_LocalRotation: {x: -0.000000044703484, y: -0, z: -0.000000029802322, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1613,7 +1685,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.9786763, z: -9.1180315}
+  m_FollowOffset: {x: 0, y: 4.5, z: -6}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1633,7 +1705,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 108.75265
+    Value: 60.65375
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
@@ -1705,8 +1777,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125634936590895544}
-  m_LocalRotation: {x: -0.0035023945, y: -0.000000029802319, z: 0.000000014901159,
-    w: 0.9999939}
+  m_LocalRotation: {x: -0.020697445, y: 0.000000029802322, z: 0.000000029802322, w: 0.9997858}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1773,7 +1844,6 @@ GameObject:
   - component: {fileID: 2061192174}
   - component: {fileID: 2061192173}
   - component: {fileID: 4538967794564128739}
-  - component: {fileID: 1212541143805844238}
   m_Layer: 0
   m_Name: StarRail_boy
   m_TagString: Player
@@ -1854,25 +1924,11 @@ MonoBehaviour:
       arm: 0
       spd: 0
       mag: 0
+      postureRecoverRate: 0
   id:
     m_InternalValue: 0
   entityType:
     m_InternalValue: 0
---- !u!114 &1212541143805844238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7125634937454937758}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 813c84575b2649869c53b1579517cd13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Block: {fileID: 11400000, guid: 38d5aba7115db70468cde79d990abfd2, type: 2}
-  UnBlock: {fileID: 11400000, guid: 7825033b4f79c9c4195ae6cf27ca39d3, type: 2}
-  postureRecoverRate: 10
 --- !u!1 &7125634937708206537
 GameObject:
   m_ObjectHideFlags: 0
@@ -1932,7 +1988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 4
-  m_FollowOffset: {x: 0, y: 2.9786763, z: -9.1180315}
+  m_FollowOffset: {x: 0, y: 4.5, z: -6}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -1952,7 +2008,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_XAxis:
-    Value: 108.75265
+    Value: 60.65375
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
@@ -2024,7 +2080,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7125634937742480157}
-  m_LocalRotation: {x: -0.024128195, y: -0, z: -0, w: 0.9997089}
+  m_LocalRotation: {x: -0.04131529, y: -0, z: 0.000000029802326, w: 0.99914616}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2249,7 +2305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8adc3a6ae19a6e540aac6890de56c1ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skill: {fileID: 11400000, guid: 4828bbf7e091bd544859e99edccbf7a6, type: 2}
+  skillEffections: {fileID: 11400000, guid: 4828bbf7e091bd544859e99edccbf7a6, type: 2}
 --- !u!1 &8171068853610332739
 GameObject:
   m_ObjectHideFlags: 0
@@ -2420,7 +2476,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8adc3a6ae19a6e540aac6890de56c1ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skill: {fileID: 11400000, guid: 4828bbf7e091bd544859e99edccbf7a6, type: 2}
+  skillEffections: {fileID: 11400000, guid: 4828bbf7e091bd544859e99edccbf7a6, type: 2}
 --- !u!1001 &5314971286330956060
 PrefabInstance:
   m_ObjectHideFlags: 0

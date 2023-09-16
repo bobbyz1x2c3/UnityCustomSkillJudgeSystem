@@ -20,6 +20,7 @@ namespace DataClass.Structs
         public float arm ;
         public float spd ;
         public float mag ;
-        
+        public float postureRecoverRate;
+
     }
 }

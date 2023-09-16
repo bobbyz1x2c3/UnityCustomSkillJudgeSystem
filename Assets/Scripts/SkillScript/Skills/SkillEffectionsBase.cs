@@ -5,7 +5,7 @@ using UnityEngine;
 namespace SkillScript.Skills
 {
     
-    public abstract class SkillBase : ScriptableObject
+    public abstract class SkillEffectionsBase : ScriptableObject
     {
         
         public List<EffectBase> effects;

@@ -8,7 +8,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: combo 5
-  m_Speed: 1
+  m_Speed: 3
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -4551784379922343576}
@@ -123,7 +123,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: upslash
-  m_Speed: 1.5
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5484817420753837386}
@@ -329,9 +329,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.29234385
+  m_TransitionDuration: 0.29234374
   m_TransitionOffset: 0
-  m_ExitTime: 0.8044419
+  m_ExitTime: 0.6901175
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -388,9 +388,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.68534946
+  m_TransitionDuration: 0.17815518
   m_TransitionOffset: 0
-  m_ExitTime: 0.6582861
+  m_ExitTime: 0.617014
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d5e6cbf670ccbc4d915d413e4f3e522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  networkCharacterPropManager: {fileID: 0}
+  networkCharacterPropHandler: {fileID: 0}
 --- !u!1101 &-3145105809974041567
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -600,7 +600,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: combo 3
-  m_Speed: 1.5
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -3145105809974041567}
@@ -938,7 +938,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: combo 1
-  m_Speed: 1.5
+  m_Speed: 6
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1380192737784363213}
@@ -1014,7 +1014,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: combo 2
-  m_Speed: 1.5
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8752555080223352050}
@@ -1188,7 +1188,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: combo 4
-  m_Speed: 1
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 6960897536610016336}
@@ -1352,9 +1352,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.16670752
+  m_TransitionDuration: 0.058374166
   m_TransitionOffset: 0
-  m_ExitTime: 0.9952599
+  m_ExitTime: 0.9952598
   m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0

@@ -1,14 +1,13 @@
-﻿using System;
-using SkillScript.Effection;
+﻿using SkillScript.Effection;
 using Unity.Netcode;
 using UnityEngine;
 
-namespace NetworkCharacterPropManager
+namespace NetworkCharacter
 {
-    public class NetworkCharacterPropManager : NetworkBehaviour , INetworkUpdateSystem
+    public class NetworkCharacterPropHandler : NetworkBehaviour , INetworkUpdateSystem
     {
         private EntityNetWorkProps m_prop;
-        private MovementStatusNetworkLateSync  m_movementStatus;
+        public Animator _animator;
         [SerializeField] private BuffCause Block;
         [SerializeField] private BuffRemove UnBlock;        
         [SerializeField] private float postureRecoverRate = 10f; 
@@ -17,8 +16,8 @@ namespace NetworkCharacterPropManager
             if (IsServer)
             {
                 var temp = m_prop.prop.Value;
-                if (Shortcuts.CharacterAnimatorUtils.isAnimationDefend(m_movementStatus._animator) ||
-                    Shortcuts.CharacterAnimatorUtils.isAnimationAttack(m_movementStatus._animator) ||
+                if (Shortcuts.CharacterAnimatorUtils.isAnimationDefend(_animator) ||
+                    Shortcuts.CharacterAnimatorUtils.isAnimationAttack(_animator) ||
                     temp.Posture >= temp.maxPosture)
                 {
                     return;
@@ -33,15 +32,14 @@ namespace NetworkCharacterPropManager
 
         private void Start()
         {
-            m_movementStatus = GetComponentInChildren<MovementStatusNetworkLateSync>();
-            m_prop = GetComponent<EntityNetWorkProps>();
-            
+            m_prop = GetComponentInParent<EntityNetWorkProps>();
+            this.RegisterNetworkUpdate(NetworkUpdateStage.FixedUpdate);
+
         }
 
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
-            this.RegisterNetworkUpdate(NetworkUpdateStage.FixedUpdate);
         }
 
         public override void OnNetworkDespawn()

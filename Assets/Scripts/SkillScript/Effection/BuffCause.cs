@@ -55,6 +55,7 @@ namespace SkillScript.Effection
         public override EEffectType GetEffectType()
         {
             return EEffectType.BuffCause;
+            
         }
     }
 }

@@ -6,10 +6,10 @@ using UnityEngine;
 namespace SkillScript.Skills
 {
     [CreateAssetMenu(menuName = "CustomSingleSkill")]
-    public class CustomSkill : SkillBase
+    public class CustomSkillEffections : SkillEffectionsBase
     {
         
-        public CustomSkill()
+        public CustomSkillEffections()
         {
             effects = new List<EffectBase>();
         }

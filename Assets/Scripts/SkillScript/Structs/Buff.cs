@@ -14,6 +14,11 @@ namespace DataClass
         public EBuffTypes type;
         public float value;
         public float duration;
+
+        public bool IsPositive => type.IsPositiveBuff();
+        public bool IsNegative => type.IsNegativeBuff();
+
+        public bool IsPermanent => duration <= 0.9f;
         //private ulong propFromID;
 
         public bool Equals(Buff other)
@@ -22,6 +27,7 @@ namespace DataClass
             return (type == other.type || value == other.value || duration == other.duration);
         }
 
+        
         
     }
 }

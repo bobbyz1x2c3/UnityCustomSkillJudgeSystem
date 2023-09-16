@@ -69,7 +69,7 @@ public class FixTransformError : MonoBehaviour
     private void LateUpdate()
     {
         transform.localPosition = Vector3.zero;
-        _animator.SetBool(Shortcuts.AnimationKeys.PARAM_ANIMATION_OCCUPIED, Shortcuts.CharacterAnimatorUtils.isAnimationOccupied(_animator));
+        _animator.SetBool(Shortcuts.AnimationKeys.Params.ANIMATION_OCCUPIED, Shortcuts.CharacterAnimatorUtils.isAnimationOccupied(_animator));
         /*if(isAnimationAttack)
         {
             _animator.SetLayerWeight(Shortcuts.AnimationKeys.MAIN_LAYER, 0);

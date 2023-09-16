@@ -119,9 +119,7 @@ public class EntityNetWorkProps : NetworkBehaviour , INetworkUpdateSystem
 
     public bool IsPlayer => !IsNPC;
 
-    public bool IsNPC =>
-        entityType.Value == EEntityTypes.EnemyNPCCharacter ||
-        entityType.Value == EEntityTypes.FriendNPCCharacter;
+    public bool IsNPC => entityType.Value.IsNPC();
 
 
     public delegate void OnNetworkUpdateDelegate();
@@ -171,7 +169,8 @@ public class EntityNetWorkProps : NetworkBehaviour , INetworkUpdateSystem
             MP = 1000,
             Posture = 100,
             stamina = 100,
-            spd = 100
+            spd = 100,
+            postureRecoverRate = 10
         };
         buffs = new NetworkList<Buff>();
         buffs.Initialize(this);
@@ -248,7 +247,7 @@ public class EntityNetWorkProps : NetworkBehaviour , INetworkUpdateSystem
         _eb.Execute(TotalManager.GetEntityByID(ID));
 #if UNITY_EDITOR
         //todo hideme
-        TotalManager.GetEntityByID(ID).ShowPropInfo();
+        //TotalManager.GetEntityByID(ID).ShowPropInfo();
 #endif 
         
     }
@@ -279,10 +278,10 @@ public class EntityNetWorkProps : NetworkBehaviour , INetworkUpdateSystem
         }
     }
 
-    public void SkillRequest(SkillBase paramSkill, ulong ID)
+    public void SkillRequest(SkillEffectionsBase paramSkillEffections, ulong ID)
     {
-        Debug.Log(paramSkill);
-        foreach (var VARIABLE in paramSkill.effects)
+        Debug.Log(paramSkillEffections);
+        foreach (var VARIABLE in paramSkillEffections.effects)
         {
             Debug.Log("a1"+VARIABLE.GetEffectType());
             EffectRequest(VARIABLE, ID);
@@ -302,7 +301,8 @@ public class EntityNetWorkProps : NetworkBehaviour , INetworkUpdateSystem
 
     IEnumerator BuffTimer(Buff buff)
     {
-        buffs.Initialize(this);
+        //todo 不知道会不会出事
+        //buffs.Initialize(this);
         buffs.Add(buff);
         if(buff.duration < -0.9f) yield break;
         yield return new WaitForSeconds(buff.duration);

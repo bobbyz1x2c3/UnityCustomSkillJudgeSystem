@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using NetworkCharacter;
 using Shortcuts;
 using TMPro;
 using Unity.Netcode;
@@ -8,7 +9,7 @@ using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSystem
+public class NetworkCharacterMovementHandler : NetworkBehaviour, INetworkUpdateSystem
 {
 
     struct transform_network : INetworkSerializeByMemcpy
@@ -18,73 +19,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
         public Quaternion rotation;
     }
     
-    
-    #region GetAnimationState
 
-    public bool isAnimationCombo
-    {
-        get
-        {
-            return (_animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.ATTACK_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.COMBO_1) ||
-                    _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.ATTACK_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.COMBO_2) ||
-                    _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.ATTACK_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.COMBO_3) ||
-                    _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.ATTACK_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.COMBO_4) ||
-                    _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.ATTACK_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.COMBO_5));
-        }
-    }
-
-    public bool isPreDefend
-    {
-        get
-        {
-            return _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.BLENDABLE_LAYER)
-                .IsName(Shortcuts.AnimationKeys.PRE_BLOCK);
-        }
-    }
-
-    public bool isAnimationDefend
-    {
-        get
-        {
-            return (_animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.BLENDABLE_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.PRE_BLOCK) ||
-                    _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.BLENDABLE_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.BLOCKING) ||
-                    _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.BLENDABLE_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.POST_BLOCK));
-        }
-    }
-
-    public bool isAnimationAttack
-    {
-        get
-        {
-            return (_animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.ATTACK_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.ATTACKING) ||
-                    _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.ATTACK_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.PRE_ATTACK) ||
-                    _animator.GetCurrentAnimatorStateInfo(Shortcuts.AnimationKeys.ATTACK_LAYER)
-                        .IsName(Shortcuts.AnimationKeys.POST_ATTACK)
-                );
-        }
-    }
-
-    public bool isAnimationOccupied
-    {
-        get
-        {
-            return isAnimationAttack
-                   || isAnimationDefend
-                   || isAnimationCombo;
-        }
-    }
-
-    #endregion
 
     #region networkUpdate
 
@@ -111,10 +46,10 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
     public float RotateSpeed = 2000f;
     public float TargetFaceAngle = 0f;
     public bool AbleToMove = false;
-    private Vector2 lastInputFaceValue = Vector2.zero;
+    public Vector2 lastInputFaceValue = Vector2.zero;
+    //should be initialized by InputHandler
     public Animator _animator;
-
-    private Rigidbody _rigidbody;
+    
     public Vector3 CurrentSpeed;
     public Vector2 TargetSpeed = Vector2.zero;
     public float AccelerateRate = 100f;
@@ -125,30 +60,24 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
 
     private bool focusMode = false;
 
-    private bool DefendMode = false;
 
+    private NetworkCharacterSkillHandler m_networkCharacterSkillHandler;
 
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
-
-
-
-
+        
         //fixme
         NetworkUpdateLoop.RegisterNetworkUpdate(this, NetworkUpdateStage.FixedUpdate);
-
-        //Camera = GameObject.FindWithTag("MainCamera").transform;
+        
         Camera = GetComponentInParent<NetworkCameraManager>()._camera.transform;
-        _animator = GetComponentInChildren<Animator>();
-        _rigidbody = GetComponent<Rigidbody>();
         CurrentSpeed = Vector3.zero;
-
         var a = IsServer || (!IsOwner || !IsClient);
         GetComponentInChildren<NetworkTransform>().enabled = a;
         GetComponentInChildren<NetworkAnimator>().enabled = true;
+        m_networkCharacterSkillHandler = GetComponent<NetworkCharacterSkillHandler>();
     }
 
     // Update is called once per frame
@@ -176,7 +105,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
         //Debug.Log("transform sync server 1" + transform.position + transform.rotation);
 
         //transform.position = pos;
-        _animator.SetFloat(Shortcuts.AnimationKeys.PARAM_CURRENT_SPEED, _currentSpeed.magnitude);
+        _animator.SetFloat(Shortcuts.AnimationKeys.Params.CURRENT_SPEED, _currentSpeed.magnitude);
         CurrentSpeed = _currentSpeed;
         transform.rotation = rota;
         if ((pos - transform.position).magnitude > 10f)
@@ -228,14 +157,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
                                        Vector2.SignedAngle(Vector2.up, lastInputFaceValue));
 
         //TargetSpeed = RotationMatrix(lastInputFaceValue.normalized * MaxSpeed, Camera.transform.rotation.eulerAngles.y);
-
-        #region 防御不移动
-
-        /*TargetSpeed = (lastInputFaceValue == Vector2.zero || DefendMode)
-        ? Vector2.zero
-        : RotationMatrix(Vector2.up * MaxSpeed, TargetFaceAngle);*/
-
-        #endregion
+        
 
         #region 防御模式减速
 
@@ -243,11 +165,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
             ? Vector2.zero
             : RotationMatrix(Vector2.up * MaxSpeed, TargetFaceAngle);
 
-        if (Shortcuts.CharacterAnimatorUtils.isAnimationDefend(_animator))
-        {
-            //减速幅度
-            TargetSpeed *= 0.2f;
-        }
+
 
         #endregion
 
@@ -264,18 +182,21 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
             Debug.Log("buzai 攻击zhong");
             RotateSpeed = 500f;
         }*/
-        if (Shortcuts.CharacterAnimatorUtils.isAnimationOccupied(_animator))
+        if (Shortcuts.CharacterAnimatorUtils.isAnimationComboWithoutEnd(_animator))
         {
             
             RotateSpeed = 20f;
             TargetSpeed *= 0.1f;
         }
+        else if(Shortcuts.CharacterAnimatorUtils.isAnimationDefend(_animator))
+        {
+            TargetSpeed *= 0.3f;
+
+        }
         else
         {
-            
             RotateSpeed = 500f;
         }
-
 
         #endregion
 
@@ -288,12 +209,12 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
             Vector2 a = deltaSpeed.normalized * AccelerateRate * Time.deltaTime;
             //_rigidbody.velocity += new Vector3(a.x, 0, a.y);
             CurrentSpeed += new Vector3(a.x, 0, a.y);
-            _animator.SetFloat(Shortcuts.AnimationKeys.PARAM_CURRENT_SPEED, CurrentSpeed.magnitude);
+            _animator.SetFloat(Shortcuts.AnimationKeys.Params.CURRENT_SPEED, CurrentSpeed.magnitude);
         }
         else
         {
             CurrentSpeed = new Vector3(TargetSpeed.x, CurrentSpeed.y, TargetSpeed.y);
-            _animator.SetFloat(Shortcuts.AnimationKeys.PARAM_CURRENT_SPEED, CurrentSpeed.magnitude);
+            _animator.SetFloat(Shortcuts.AnimationKeys.Params.CURRENT_SPEED, CurrentSpeed.magnitude);
         }
 
         //转向
@@ -333,15 +254,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
         return new Vector2((float)newX, (float)newY);
     }
 
-    public void OnMove(InputValue value)
-    {
-        if (IsOwner && IsClient)
-        {
-            lastInputFaceValue = value.Get<Vector2>();
-            //SetLastInputFaceValueServerRpc(value.Get<Vector2>());
-        }
 
-    }
 
     [ServerRpc]
     public void SetLastInputFaceValueServerRpc(Vector2 _lastInputFaceValue)
@@ -411,25 +324,7 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
 
     }
 
-
-
-
-
-    /*
-    [ServerRpc]
-    void DefendServerRpc(bool _DefendMode)
-    {
-        _animator.SetBool("isDefend",_DefendMode);
-        
-    }
-
-    [ServerRpc]
-    void AttackServerRpc(bool _AttackMode)
-    {
-        //_animator.SetTrigger("Attack");
-        
-        
-    }*/
+    
 
 
 
@@ -437,64 +332,9 @@ public class MovementStatusNetworkLateSync : NetworkBehaviour, INetworkUpdateSys
     void SendAnimBoolServerRpc(string _paramName, bool _Value)
     {
         _animator.SetBool(_paramName, _Value);
-        
 
     }
+    
 
-    [ServerRpc]
-    void SendAnimTriggerServerRpc(string _paramName)
-    {
-        _animator.SetTrigger(_paramName);
-    }
-
-    public void OnAttack(InputValue value)
-    {
-        var a = value.Get<float>();
-        
-        
-        if (IsOwner && IsClient && a>0)
-        {
-            //attackCancelCheck = a > 0;
-            SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_ATTACK, a>0);
-        }
-    }
-
-    public void OnAttack2(InputValue value)
-    {
-        if (
-            IsOwner && 
-            IsClient 
-            )
-        {
-            /*SendAnimTriggerServerRpc("Attack");
-            _animator.SetTrigger("Attack");*/
-            SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_UPSLASH, true);
-        }
-    }
-    public void OnDefend(InputValue value)
-    {
-        var a = value.Get<float>();
-        DefendMode = a > 0;
-
-        if (IsOwner && IsClient)
-        {
-            //DefendServerRpc(DefendMode); 
-            SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_DEFEND, DefendMode);
-            
-            //_animator.SetBool("isDefend",DefendMode);
-        }
-
-
-    }
-    public void OnDefend_Switch(InputValue value)
-    {
-        DefendMode = !DefendMode;
-        if (IsOwner && IsClient)
-        {
-            //DefendServerRpc(DefendMode); 
-            SendAnimBoolServerRpc(Shortcuts.AnimationKeys.PARAM_IS_DEFEND, DefendMode);
-            
-            //_animator.SetBool("isDefend",DefendMode);
-        }
-    }
+    
 }

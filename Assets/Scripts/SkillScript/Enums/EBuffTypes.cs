@@ -49,4 +49,30 @@
         
         
     }
+    
+    public static class BuffUtils{
+        public static bool IsPositiveBuff(this EBuffTypes type)
+        {
+            return type == EBuffTypes.arm_up
+                   || type == EBuffTypes.atk_up
+                   || type == EBuffTypes.mag_up
+                   || type == EBuffTypes.spd_up
+                   || type == EBuffTypes.arm_up_ratio
+                   || type == EBuffTypes.atk_up_ratio
+                   || type == EBuffTypes.mag_up_ratio;
+        }
+        
+        public static bool IsNegativeBuff(this EBuffTypes type)
+        {
+            return type == EBuffTypes.arm_down
+                   || type == EBuffTypes.atk_down
+                   || type == EBuffTypes.mag_down
+                   || type == EBuffTypes.spd_down
+                   || type == EBuffTypes.arm_down_ratio
+                   || type == EBuffTypes.atk_down_ratio
+                   || type == EBuffTypes.mag_down_ratio;
+        }
+        
+        
+    }
 }
